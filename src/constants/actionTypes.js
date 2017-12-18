@@ -1,0 +1,11 @@
+// SUBJECT
+export const ADJUST_HUE = 'ADJUST_HUE';
+export const ADJUST_SATURATION = 'ADJUST_SATURATION';
+export const ADJUST_LIGHTNESS = 'ADJUST_LIGHTNESS';
+export const ADJUST_X = 'ADJUST_X';
+export const ADJUST_Y = 'ADJUST_Y';
+export const SUBJECT_DEATH = 'SUBJECT_DEATH';
+export const REPLACE_SUBJECT = 'REPLACE_SUBJECT';
+
+// MESSAGES
+export const SET_MESSAGE = 'SET_MESSAGE';
