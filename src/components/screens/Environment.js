@@ -165,7 +165,6 @@ class Environment extends Component {
             y,
             hue,
         } = this.props;
-        console.log(hue);
         const {
             map,
         } = this.state;

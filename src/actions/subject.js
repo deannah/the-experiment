@@ -7,17 +7,14 @@ import {
     SUBJECT_DEATH,
     REPLACE_SUBJECT,
 } from '../constants/actionTypes';
+import {
+    MAX_HUE,
+    HALF_HUE,
+} from '../constants/color';
 
 import {
     setMessage,
 } from './messages';
-
-import {
-    convertHueToDegree,
-    convertDegreeToHue,
-    convertDegreesToRadians,
-    convertRadiansToDegrees,
-} from '../helpers/math';
 
 export function adjustHue(hue) {
     return {
@@ -32,23 +29,14 @@ export function adjustHueByAverage({
     currentHueWeight,
     otherHueWeight,
 }) {
-    // convert to degrees
-    let degreeA = convertHueToDegree(currentHue);
-    let degreeB = convertHueToDegree(otherHue);
-    // now adjust to radians
-    degreeA = convertDegreesToRadians(degreeA);
-    degreeB = convertDegreesToRadians(degreeB);
-    // do some math to find the average angle
-    let X = Math.cos(degreeA) + Math.cos(degreeB);
-    let Y = Math.sin(degreeA) + Math.cos(degreeB);
-    if (currentHueWeight && otherHueWeight) {
-        // adjusts it by the weight (between 0 and 1) if supplied
-        X *= currentHueWeight;
-        Y *= otherHueWeight;
+    // https://stackoverflow.com/a/1813558
+    const currentAdjustedHue = currentHue > HALF_HUE ? currentHue - MAX_HUE : currentHue;
+    const otherAdjustedHue = otherHue > HALF_HUE ? otherHue - MAX_HUE : otherHue;
+    const totalHue = currentAdjustedHue * currentHueWeight + otherAdjustedHue * otherHueWeight;
+    let nextHue = totalHue;
+    if (nextHue < 0) {
+        nextHue += MAX_HUE;
     }
-    const averageRadians = Math.atan2(Y, X);
-    const nextHue = convertDegreeToHue(convertRadiansToDegrees(averageRadians));
-    console.log(currentHue, otherHue, degreeA, degreeB, X, Y, convertRadiansToDegrees(averageRadians));
     return adjustHue(nextHue);
 }
 
